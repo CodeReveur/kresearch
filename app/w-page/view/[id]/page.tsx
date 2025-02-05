@@ -46,14 +46,15 @@ function truncateText(text: string, maxLength: number) {
 }
 
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function View({ params }: { params: { id: string } }) {
     const [isOpen, setIsOpen] = useState(false);
     
       const [activeId, setActiveId] = useState(0);
       const [error, setError] = useState<string | null>(null);
       const [success, setSuccess] = useState<string | null>(null);
       const [research, setResearch] = useState<FormData | null>(null);
-    
+      const [resolvedId, setResolvedId] = useState<string | null>(null); // State to hold resolved ID
+
     
        const handleActive = (id: number) => {
         setActiveId(id);
@@ -62,13 +63,15 @@ export default function Page({ params }: { params: { id: string } }) {
       useEffect(() => {
         const fetchResearch = async () => {
           try {
+             const resolvedParams = await params; // Unwrap params from Promise
+             setResolvedId(resolvedParams.id); // Store resolved ID in state
             const response = await fetch(`/api/researches/view`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json", // Ensure JSON format
                 Accept: "application/json",
               },
-              body: JSON.stringify({ id: params.id }), // Wrap the id in an object
+              body: JSON.stringify({ id: resolvedParams.id}), // Wrap the id in an object
             });
             if (!response.ok) throw new Error("Failed to fetch researches");
             const data = await response.json();
