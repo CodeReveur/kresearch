@@ -1,8 +1,10 @@
-import { NextResponse } from 'next/server';
-import client from "../../utils/db"; // Adjust the path to your database client
+export const dynamic = "force-dynamic";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-    const { id } = await params;
+import client from "../../utils/db"; // Adjust the path to your database client
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params;
 
     if (!id) {
         return NextResponse.json({ message: "Research ID is required." }, { status: 400 });
