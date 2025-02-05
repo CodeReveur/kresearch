@@ -343,7 +343,7 @@ const Researches = () => {
       <div className="flex flex-col py-2 space-y-2 w-full">
         {currentResearches.map((reseach, i) => (
 
-        <Link key={i} href={`/w-page/view/${reseach.hashed_id}`} className="border w-full border-slate-200 rounded-lg py-2 px-5 hover:bg-slate-100 bg-white">
+        <Link key={i} href={`/w-page/view?id=${reseach.hashed_id}`} className="border w-full border-slate-200 rounded-lg py-2 px-5 hover:bg-slate-100 bg-white">
           <div className="font-medium text-teal-600">{reseach.title}</div>
           <div className="ratings space-x-3">
            <Ratings rating={reseach.ratings}/>

@@ -38,35 +38,32 @@ function truncateText(text: string, maxLength: number) {
   return text;
 }
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeId, setActiveId] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [research, setResearch] = useState<FormData | null>(null);
-  const [resolvedId, setResolvedId] = useState<string | null>(null); // State to hold resolved ID
+  const [id, setId] = useState<string>("");
 
   const handleActive = (id: number) => {
     setActiveId(id);
   };
 
-  // If using async params, make sure you handle them correctly
   useEffect(() => {
-    const fetchResolvedParams = async () => {
-      try {
-        // Ensure that params are resolved correctly
-        const resolvedParams = await params;
-        setResolvedId(resolvedParams.id);
-      } catch (error) {
-        setError("Failed to resolve params");
+    // Get search query from URL and set the id
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get("id");
+      if (query) {
+        setId(query);
       }
-    };
-
-    fetchResolvedParams();
-  }, [params]);
+    }
+  }, []);
 
   useEffect(() => {
-    if (resolvedId) {
+    // Fetch research data only if the id is set
+    if (id) {
       const fetchResearch = async () => {
         try {
           const response = await fetch(`/api/researches/view`, {
@@ -75,23 +72,24 @@ export default function Page({ params }: { params: { id: string } }) {
               "Content-Type": "application/json",
               Accept: "application/json",
             },
-            body: JSON.stringify({ id: resolvedId }), // Use resolvedId
+            body: JSON.stringify({ id: id }), // Use resolved ID
           });
           if (!response.ok) throw new Error("Failed to fetch researches");
           const data = await response.json();
           setResearch(data);
         } catch (error) {
-          setError("An error occurred while fetching researches. " + error);
+          setError("An error occurred while fetching research data: " + error);
         }
       };
+
       fetchResearch();
     }
-  }, [resolvedId]); // Trigger research fetching after resolvedId is available
+  }, [id]); // Trigger research fetching whenever `id` changes
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (research?.abstract) {
       const abstract = document.getElementById("abstract") as HTMLDivElement;
-      if (abstract && research?.abstract) {
+      if (abstract) {
         abstract.innerHTML = research.abstract;
       }
     }
