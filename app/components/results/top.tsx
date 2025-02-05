@@ -55,8 +55,8 @@ const TopBar = ({onClickSideBar}: TopbarProps) => {
           </form>
         </div>
         <div className="text-white space-x-10 pr-3 flex items-center">
-          <Link href={"/w-page/contactus"} className="hover:text-sky-100 hover:underline text-nowrap">Contact us</Link>
-          <Link href={"/w-page/about"} className="hover:text-sky-100 hover:underline">About</Link>
+          <Link href={""} className="hover:text-sky-100 hover:underline text-nowrap">Contact us</Link>
+          <Link href={""} className="hover:text-sky-100 hover:underline">About</Link>
           <div className="flex border border-slate-200 py-1 text-sm px-2 rounded-md text-slate-300">
             <i className="bi bi-globe"> </i>
             <select name="" id="" className="bg-transparent outline-none">
