@@ -1,11 +1,22 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface TopbarProps {
   onClickSideBar: () => void;
 }
 
 const TopBar = ({onClickSideBar}: TopbarProps) => {
-
+  const [query, setQuery] = useState("");
+ useEffect(() => {
+    // Get search query from URL and set the id
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const kay = urlParams.get("search");
+      if (kay) {
+        setQuery(""+kay);
+      }
+    }
+  }, []);
   return (
     <div className="fixed bg-white w-full top-0 left-0 m-0 z-10">
       <div className="flex justify-center items-center">
@@ -39,7 +50,7 @@ const TopBar = ({onClickSideBar}: TopbarProps) => {
       <div className="w-full px-4 py-2 bg-teal-600 flex justify-between items-center">
         <div className="search w-full">
           <form method="GET" action={"/w-page/result"} className="flex bg-white w-[60%] rounded-md">
-           <input type="search" name="search" id="" placeholder="Search for researches..." className="w-full placeholder:text-gray-500 border outline-none rounded-s-md border-r-0 px-4 py-2 bg-transparent border-slate-50"/>
+           <input type="search" name="search" id="" defaultValue={query} placeholder="Search for researches..." className="w-full placeholder:text-gray-500 border outline-none rounded-s-md border-r-0 px-4 py-2 bg-transparent border-slate-50"/>
            <button type="submit" className="text-center px-4 text-slate-200 border border-l-0 rounded-e-md border-slate-50 bg-teal-600"><i className="bi bi-search"></i></button>
           </form>
         </div>

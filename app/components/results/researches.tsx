@@ -252,14 +252,13 @@ const Researches = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [query, setQuery] = useState("");
+
   const itemsPerPage = 10;
   if (!researches.length) {
     //return <Preloader />; // Show preloader if no researches are passed
   }
 
-   //get search query form url
-   const urlParams = new URLSearchParams(window.location.search);
-   const query = urlParams.get("search");
 
   // Calculate total pages
   const totalPages = Math.ceil(researches.length / itemsPerPage);
@@ -274,22 +273,23 @@ const Researches = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  
+
+  useEffect(() => {
+    // Get search query from URL and set the id
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const kay = urlParams.get("search");
+      if (kay) {
+        setQuery(""+kay);
+      }
+    }
+  }, []);
   
    // Fetch Researches
    useEffect(() => {
     
     const fetchResearches = async () => {
-      //get search query form url
-      const urlParams = new URLSearchParams(window.location.search);
-      const query = urlParams.get("search");
       setLoading(true);
-
-      if (!query) {
-        setError("No search query provided.");
-        setLoading(false);
-        return;
-      }
      
       try {
         const response = await fetch(`/api/researches?search=${query}`);
@@ -305,7 +305,7 @@ const Researches = () => {
       }
     };
     fetchResearches();
-  }, []);
+  }, [query]);
 
  const handleAbstract = (research: string, id: number) => {
     if (typeof window !== "undefined") { // ✅ Ensure it runs only on the client
