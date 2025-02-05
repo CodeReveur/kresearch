@@ -20,21 +20,14 @@ interface FormData {
 }
 
 function formatDate(dateString: any) {
-  // Convert the string to a Date object
   const date = new Date(dateString);
-
-  // Array of month names
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-  // Extract parts of the date
   const year = date.getFullYear();
   const month = months[date.getMonth()];
   const day = String(date.getDate()).padStart(2, "0");
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const seconds = String(date.getSeconds()).padStart(2, "0");
-
-  // Construct the formatted date
   return `${month}, ${day} ${year} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -42,60 +35,73 @@ function truncateText(text: string, maxLength: number) {
   if (text.length > maxLength) {
     return text.slice(0, maxLength) + "...";
   }
-  return text; // Return the original text if it's within the limit
+  return text;
 }
 
+export default function Page({ params }: { params: { id: string } }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeId, setActiveId] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [research, setResearch] = useState<FormData | null>(null);
+  const [resolvedId, setResolvedId] = useState<string | null>(null); // State to hold resolved ID
 
-export default function View({ params }: { params: { id: string } }) {
-    const [isOpen, setIsOpen] = useState(false);
-    
-      const [activeId, setActiveId] = useState(0);
-      const [error, setError] = useState<string | null>(null);
-      const [success, setSuccess] = useState<string | null>(null);
-      const [research, setResearch] = useState<FormData | null>(null);
-      const [resolvedId, setResolvedId] = useState<string | null>(null); // State to hold resolved ID
+  const handleActive = (id: number) => {
+    setActiveId(id);
+  };
 
-    
-       const handleActive = (id: number) => {
-        setActiveId(id);
-       }
-      // Fetch Researches
-      useEffect(() => {
-        const fetchResearch = async () => {
-          try {
-             const resolvedParams = await params; // Unwrap params from Promise
-             setResolvedId(resolvedParams.id); // Store resolved ID in state
-            const response = await fetch(`/api/researches/view`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json", // Ensure JSON format
-                Accept: "application/json",
-              },
-              body: JSON.stringify({ id: resolvedParams.id}), // Wrap the id in an object
-            });
-            if (!response.ok) throw new Error("Failed to fetch researches");
-            const data = await response.json();
-            setResearch(data);
-          } catch (error) {
-            setError("An error occurred while fetching researches. " + error);
-          }
-        };
-        fetchResearch();
-      }, []);
-     
-      useEffect(() => {
-        if (typeof window !== "undefined") { // ✅ Ensure it runs only on the client
-          const abstract = document.getElementById("abstract") as HTMLDivElement;
-          if (abstract && research?.abstract) {
-            abstract.innerHTML = research.abstract;
-          }
+  // If using async params, make sure you handle them correctly
+  useEffect(() => {
+    const fetchResolvedParams = async () => {
+      try {
+        // Ensure that params are resolved correctly
+        const resolvedParams = await params;
+        setResolvedId(resolvedParams.id);
+      } catch (error) {
+        setError("Failed to resolve params");
+      }
+    };
+
+    fetchResolvedParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (resolvedId) {
+      const fetchResearch = async () => {
+        try {
+          const response = await fetch(`/api/researches/view`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({ id: resolvedId }), // Use resolvedId
+          });
+          if (!response.ok) throw new Error("Failed to fetch researches");
+          const data = await response.json();
+          setResearch(data);
+        } catch (error) {
+          setError("An error occurred while fetching researches. " + error);
         }
-      }, [research]); // ✅ Add research as a dependency to update when it changes
-    
-      const buttons = [
-        {"name": "details"},
-        {"name": "institution"},
-      ]
+      };
+      fetchResearch();
+    }
+  }, [resolvedId]); // Trigger research fetching after resolvedId is available
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const abstract = document.getElementById("abstract") as HTMLDivElement;
+      if (abstract && research?.abstract) {
+        abstract.innerHTML = research.abstract;
+      }
+    }
+  }, [research]);
+
+  const buttons = [
+    { name: "details" },
+    { name: "institution" },
+  ];
+
   const showSideBar = () => setIsOpen(!isOpen);
   const closeSideBar = () => setIsOpen(false);
 
