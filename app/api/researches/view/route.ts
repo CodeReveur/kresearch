@@ -3,9 +3,17 @@ export const dynamic = "force-dynamic";
 import client from "../../utils/db"; // Adjust the path to your database client
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
-
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  let requestBody;
+    
+    // Safe JSON parsing
+    try {
+        requestBody = await req.json();
+    } catch (error) {
+        return NextResponse.json({ message: "Invalid JSON format in request." }, { status: 400 });
+    }
+    const {id} = requestBody;
+    
     if (!id) {
         return NextResponse.json({ message: "Research ID is required." }, { status: 400 });
     }

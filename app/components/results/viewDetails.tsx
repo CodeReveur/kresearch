@@ -22,7 +22,9 @@ interface FormData {
     {"name": "institution"},
     {"name": "billing"},
   ];
-
+interface getData{
+  id: string;
+}
 
 function formatDate(dateString: any) {
   // Convert the string to a Date object
@@ -58,6 +60,9 @@ const ViewResearch: React.FC<ViewResearchProps> = ({ResearchId}) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [research, setResearch] = useState<FormData | null>(null);
+  const [formData, setFormData] = useState<getData>({
+      id: ResearchId,
+    });
 
 
    const handleActive = (id: number) => {
@@ -67,7 +72,14 @@ const ViewResearch: React.FC<ViewResearchProps> = ({ResearchId}) => {
   useEffect(() => {
     const fetchResearch = async () => {
       try {
-        const response = await fetch(`/api/researches/${ResearchId}`);
+        const response = await fetch(`/api/researches/view`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Ensure JSON format
+            Accept: "application/json",
+          },
+          body: JSON.stringify(formData), // Convert form data to JSON
+        });
         if (!response.ok) throw new Error("Failed to fetch researches");
         const data = await response.json();
         setResearch(data);
