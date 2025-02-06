@@ -180,7 +180,7 @@ const VerifyForm = ({hashed, email}: Props) => {
               </div>
             ))}
             <div className="flex items-center justify-center">
-              <div className={`${timer ? 'text-teal-500' : 'text-teal-200'} font-semibold mr-1 cursor-pointer`} onClick={() => {timer ? handleResendCode() : ''}}>Resend code in  </div>
+              <div className={`${timer ? 'text-teal-500' : 'text-teal-200'} font-semibold mr-1 cursor-pointer`} onClick={() => {timer ? handleResendCode() : ''}}>Resend code {timer ? '' : 'in '} </div>
               <div className="text-slate-300 font-semibold" id="counter"></div>
             </div>
              {/* Submit Button */}
