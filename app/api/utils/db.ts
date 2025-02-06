@@ -1,5 +1,5 @@
 const { Client } = require("pg");
-/**
+
 const client = new Client({
   host: process.env.PG_HOST,
   user: process.env.PG_USER,
@@ -10,7 +10,7 @@ const client = new Client({
 });
 
 client.connect();
-*/
+/**
 let client: any;
 
 try {
@@ -32,12 +32,11 @@ try {
             console.error('Failed to connect to the database:', err.message);
             throw err;
         }
-        console.log('Database connection established successfully.');
     });
 } catch (error) {
     console.error('Failed to connect to the database:', error);
     throw error;
 }
-
+*/
 export default client;
 

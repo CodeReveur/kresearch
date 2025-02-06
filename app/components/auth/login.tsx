@@ -50,13 +50,13 @@ const LoginForm = () => {
       });
     
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`${errorText}`);
+        const errorText = await response.json();
+        throw new Error(`${errorText.message}`);
       }
     
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
-        throw new Error(`Unexpected response format: ${await response.text()}`);
+        throw new Error(`Unexpected response format: ${(await response.json()).message}`);
       }
     
       const data = await response.json();
@@ -71,8 +71,8 @@ const LoginForm = () => {
         profile: data.user.profile
     }));
      
-    } catch (error) {
-      setError((error as Error).message);
+    } catch (error: any) {
+      setError(error.message);
     }
     
   };
@@ -104,7 +104,7 @@ const LoginForm = () => {
         <form className="space-y-6 px-8" onSubmit={handleSubmit}>
         {(success || error) && (
           <div
-          className={`${success?.includes('success') ? 'bg-green-100 text-green-500 border-green-300 ' : ' bg-red-100 text-red-500 border-red-300 '} font-semibold p-4 rounded-md`}
+          className={`${success?.includes('success') ? 'bg-green-100 text-green-500 border-green-300 ' : ' bg-red-100 text-red-500 border-red-300 '} font-medium px-4 py-2 rounded-md `}
           >
             {success ? success : error ? error : ""}
           </div>
