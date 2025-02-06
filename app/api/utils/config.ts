@@ -11,13 +11,10 @@ export async function sendVerificationEmail(email: string, code: string, name: s
   
   let sendSmtpEmail = new brevo.SendSmtpEmail();
   
-  sendSmtpEmail.subject = "Acoount Verification";
+  sendSmtpEmail.subject = "Account Verification";
   sendSmtpEmail.htmlContent = `
   <html>
    <body>
-     <div style="display: flex; justify-content: center; align-items: center; padding: 9px;">
-       <img src="https://res.cloudinary.com/kresearchbase/image/upload/v1738711584/students/profile_pictures/logo_bsch7f.svg" alt="Kamero" style="width: 150px; h:150px; border-radius: 50%;" />
-     </div>
     <h4 style="color: white;padding: 10px 20px; background: teal; font-size: 17px; border-radius: 8px; text-align: center;">ACCOUNT VERIFICATION</h4>
     <div style="color: gray; font-size: 14px; margin: 10px 0;">
      Dear ${name}, <br /> 
@@ -66,9 +63,6 @@ export async function sendChangePasswordVerificationEmail(email: string, code: s
   sendSmtpEmail.htmlContent = `
   <html>
    <body>
-     <div style="display: flex; justify-content: center; align-items: center; padding: 9px;">
-       <img src="https://res.cloudinary.com/kresearchbase/image/upload/v1738711584/students/profile_pictures/logo_bsch7f.svg" alt="Kamero" style="width: 150px; h:150px; border-radius: 50%;" />
-     </div>
     <h4 style="color: white;padding: 10px 20px; background: teal; font-size: 17px; border-radius: 8px; text-align: center;">EMAIL VERIFICATION</h4>
     <div style="color: gray; font-size: 14px; margin: 10px 0;">
       Hello! <br/> Your request to change password has been proccessed, please verify your email

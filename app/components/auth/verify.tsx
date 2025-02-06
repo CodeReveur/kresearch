@@ -9,10 +9,12 @@ interface FormData {
   hashed_id: string;
   code: string;
 }
+
 interface Props{
   hashed: string;
   email: string;
 }
+
 const VerifyForm = ({hashed, email}: Props) => { 
 
   const [focus, setFocus] = useState<Record<string, boolean>>({});
@@ -22,9 +24,31 @@ const VerifyForm = ({hashed, email}: Props) => {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [timer, setTimer] = useState(false);
 
   const router = useRouter();
+  let timeLeft = 120; // 2 minutes in seconds
 
+  useEffect(()=>{
+
+
+  const holder = document.getElementById('counter') as HTMLDivElement;
+
+      const timer = setInterval(() => {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      console.log(`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`); 
+      holder.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;;
+
+      if (timeLeft <= 0) {
+          clearInterval(timer);
+          setTimer(true);
+          timeLeft == 0;
+          holder.textContent ="";
+      }
+      timeLeft--;
+  }, 1000);
+  }, [timeLeft]);
 
 
 
@@ -40,6 +64,28 @@ const VerifyForm = ({hashed, email}: Props) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
+
+  const handleResendCode = async () => {
+    try {
+      const response = await fetch("/api/add/auth/resend-code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Ensure JSON format
+          Accept: "application/json",
+        },
+        body: JSON.stringify({hashed_id: hashed}),
+      });
+
+      if (response.ok) {
+        setSuccess("Code sent successfully ✅");
+      } else {
+        const error = await response.json();
+        setError(error.message);
+      }
+    } catch (error) {
+      setError(`Verification failed! Try again ${(error as Error).message}`);
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +128,6 @@ const VerifyForm = ({hashed, email}: Props) => {
       router.push('https://dashboard.kamero.rw');
      }, 2000)
     }
-
   return (
     <div className="min-h-screen py-5 flex items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-50">
       <div className="w-full max-w-lg bg-white shadow-xl rounded-lg py-4">
@@ -102,7 +147,7 @@ const VerifyForm = ({hashed, email}: Props) => {
         <form className="space-y-6 px-8" onSubmit={handleSubmit}>
         {(success || error) && (
           <div
-          className={`${success?.includes('verified') ? 'bg-green-100 text-green-500 border-green-300 ' : ' bg-red-100 text-red-500 border-red-300 '} font-semibold p-4 rounded-md`}
+          className={`${success?.includes('verified') || success?.includes('success') ? 'bg-green-100 text-green-500 border-green-300 ' : ' bg-red-100 text-red-500 border-red-300 '} font-semibold p-4 rounded-md`}
           >
             {success ? success : error ? error : ""}
           </div>
@@ -134,7 +179,10 @@ const VerifyForm = ({hashed, email}: Props) => {
                 />
               </div>
             ))}
-          
+            <div className="flex items-center justify-center">
+              <div className={`${timer ? 'text-teal-500' : 'text-teal-200'} font-semibold mr-1 cursor-pointer`} onClick={() => {timer ? handleResendCode() : ''}}>Resend code in  </div>
+              <div className="text-slate-300 font-semibold" id="counter"></div>
+            </div>
              {/* Submit Button */}
             <div className="text-center">
              <button
