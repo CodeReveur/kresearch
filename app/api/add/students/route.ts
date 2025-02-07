@@ -66,7 +66,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       profilePicture: formData.get("profilePicture") as File,
     };
 
-    console.log("Received data: ", studentData);
 
     if (
       !studentData.first_name ||
