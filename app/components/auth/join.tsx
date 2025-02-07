@@ -78,6 +78,8 @@ const JoinForm = () => {
     });
     if (file) {
       payload.append("profilePicture", file);
+    } else {
+      setError("Profile picture require! Please select")
     }
 
     try {
@@ -93,7 +95,7 @@ const JoinForm = () => {
         setFile(null);
       } else {
         const error = await response.json();
-        setError(`${error.message}`);
+        setError(`${error.error}`);
       }
     } catch (error) {
       setError(`Submission failed. ${(error as Error).message}`);
@@ -134,13 +136,13 @@ const JoinForm = () => {
 
         {/* Form */}
         <form className="space-y-4 px-8" onSubmit={handleSubmit}>
-        {/*success || error && (
+        {success || error && (
           <div
-          className={`${success ? 'bg-green-100 text-green-500 border-green-300' : 'bg-red-100 text-red-500 border-red-300'} p-4 rounded-md`}
+          className={`${success.includes('success') ? 'bg-green-100 text-green-500 border-green-300' : 'bg-red-100 text-red-500 border-red-300'} p-4 rounded-md`}
           >
             {success ? success : error ? error : ""}
           </div>
-        )*/}
+        )}
           {/* Row 1: First and Last Name */}
           <div className="grid grid-cols-2 gap-4">
             {[
