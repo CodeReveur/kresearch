@@ -6,10 +6,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os'); // Import os to get the temporary directory
 
-
 import { sendVerificationEmail } from "../../utils/config";
 
-// Define types for the student request
 type StudentRequest = {
   first_name: string;
   last_name: string;
@@ -19,17 +17,15 @@ type StudentRequest = {
   department: string;
   profilePicture: File;
 };
-// Helper function to hash the password using SHA-256
+
 async function hashPassword(password: string): Promise<string> {
     const textEncoder = new TextEncoder();
     const encoded = textEncoder.encode(password);
     const hashBuffer = await crypto.subtle.digest("SHA-256", encoded);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-    return hashHex;
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Helper to upload profile picture to Cloudinary
 async function uploadProfilePictureToCloudinary(file: File): Promise<string> {
   const tempDir = os.tmpdir();
   const profilePicturePath = path.join(tempDir, file.name);
@@ -45,12 +41,10 @@ async function uploadProfilePictureToCloudinary(file: File): Promise<string> {
   return uploadResult.secure_url;
 }
 
-// Function to generate a 6-digit verification code
 function generateVerificationCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Helper function to hash the student ID
 async function hashId(id: number): Promise<string> {
   const textEncoder = new TextEncoder();
   const encoded = textEncoder.encode(id.toString());
@@ -59,7 +53,6 @@ async function hashId(id: number): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Handle POST request for adding a student
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const formData = await req.formData();
@@ -89,6 +82,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
+    const existingStudentEmail = await client.query(
+      "SELECT id FROM students WHERE email = $1",
+      [studentData.email]
+    );
+    const existingStudentPhone = await client.query(
+      "SELECT id FROM students WHERE phone = $1",
+      [studentData.phone]
+    );
+
+    if (existingStudentEmail.rows.length > 0) {
+      return NextResponse.json(
+        { error: "Email is already registered" },
+        { status: 400 }
+      );
+    }
+
+    if (existingStudentPhone.rows.length > 0) {
+      return NextResponse.json(
+        { error: "Phone is already registered" },
+        { status: 400 }
+      );
+    }
+
     const profilePicture = await uploadProfilePictureToCloudinary(studentData.profilePicture);
     const status = "Unverified";
     const verificationCode = generateVerificationCode();
@@ -106,7 +122,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         studentData.department,
         hashedPassword,
         profilePicture,
-        null, // Placeholder for hashed_id
+        null,
         verificationCode,
       ]
     );
@@ -119,7 +135,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       studentId,
     ]);
 
-    const mail = await sendVerificationEmail(studentData.email, verificationCode, studentData.first_name);
+    await sendVerificationEmail(studentData.email, verificationCode, studentData.first_name);
 
     return NextResponse.json(
       { message: "Student added successfully", student: { id: studentId, hashed_id: hashedStudentId, email: studentData.email } },

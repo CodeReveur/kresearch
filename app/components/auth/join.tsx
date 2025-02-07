@@ -92,8 +92,8 @@ const JoinForm = () => {
         setHashedId(data.student.hashed_id);
         setFile(null);
       } else {
-        const error = await response.text();
-        setError(`Submission failed. ${error}`);
+        const error = await response.json();
+        setError(`${error.message}`);
       }
     } catch (error) {
       setError(`Submission failed. ${(error as Error).message}`);
