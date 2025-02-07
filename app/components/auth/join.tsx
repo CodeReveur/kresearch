@@ -316,7 +316,7 @@ const JoinForm = () => {
             </div>
        
             <div className="relative flex flex-col justify-center space-y-1 text-center">
-              <Link href={"https://krbdash.vercel.app/auth/join"} className="text-sm text-teal-600"><span className="text-slate-500">Already joined?</span> Sign in</Link>
+              <Link href={"https://krbdash.vercel.app/auth/login"} className="text-sm text-teal-600"><span className="text-slate-500">Already joined?</span> Sign in</Link>
             </div>
         </form>
 
