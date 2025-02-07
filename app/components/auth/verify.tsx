@@ -125,7 +125,7 @@ const VerifyForm = ({hashed, email}: Props) => {
 
     if(success?.includes('verified')){
      setTimeout(() => {
-      router.push('https://dashboard.kamero.rw');
+      router.push('http://localhost:3000');
      }, 2000)
     }
   return (

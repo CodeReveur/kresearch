@@ -64,13 +64,13 @@ const LoginForm = () => {
       setSuccess("Login successful");
       setFormData({ login: "", password: "" });
       // Update localStorage with the new session
-      localStorage.setItem('userSession', JSON.stringify({
+      localStorage.setItem('studentSession', JSON.stringify({
         id: data.user.id,
         name: data.user.name,
         session_id: data.user.session_id,
         profile: data.user.profile
     }));
-     
+     alert(data.user.name);
     } catch (error: any) {
       setError(error.message);
     }
@@ -79,7 +79,7 @@ const LoginForm = () => {
 
   if(success?.includes('success')){
     setTimeout(() => {
-     router.push('https://dash.kamero.rw');
+     router.push('http://localhost:3000');
     }, 2000)
    }
 

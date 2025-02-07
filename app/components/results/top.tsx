@@ -39,7 +39,7 @@ const TopBar = ({onClickSideBar}: TopbarProps) => {
           </div>
           ) : (
           <div className="flex space-x-4 items-center">
-            <Link href={"/w-page/auth/login"} className="border border-teal-600 py-1 px-6 rounded-md ">Login</Link>
+            <Link href={"https://krbdash.vercel.app/auth/login"} className="border border-teal-600 py-1 px-6 rounded-md ">Login</Link>
             <Link href={"/w-page/auth/join"} className="border border-teal-300 py-1 px-6 rounded-md bg-teal-600 text-white">Join for free</Link>
           </div>
           )}

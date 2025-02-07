@@ -3,7 +3,7 @@ import Link from "next/link";
 const Links = [
   {"name": "Home", "icon": "bi bi-house", "url": "/"},
   {"name": "Kamero official site", "icon": "bi bi-globe", "url": "https://kamero.rw"},
-  {"name": "Login", "icon": "bi bi-box-arrow-right", "url": "/w-page/auth/login"},
+  {"name": "Login", "icon": "bi bi-box-arrow-right", "url": "https://krbdash.vercel.app/auth/login"},
 ]
 
 
