@@ -125,7 +125,7 @@ const VerifyForm = ({hashed, email}: Props) => {
 
     if(success?.includes('verified')){
      setTimeout(() => {
-      router.push('https//krbdash.vercel.app/auth/login');
+      router.push('https://krbdash.vercel.app/auth/login');
      }, 2000)
     }
   return (
