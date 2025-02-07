@@ -125,7 +125,7 @@ const VerifyForm = ({hashed, email}: Props) => {
 
     if(success?.includes('verified')){
      setTimeout(() => {
-      router.push('http://localhost:3000');
+      router.push('https//krbdash.vercel.app/auth/login');
      }, 2000)
     }
   return (
@@ -183,6 +183,7 @@ const VerifyForm = ({hashed, email}: Props) => {
               <div className={`${timer ? 'text-teal-500' : 'text-teal-200'} font-semibold mr-1 cursor-pointer`} onClick={() => {timer ? handleResendCode() : ''}}>Resend code {timer ? '' : 'in '} </div>
               <div className="text-slate-300 font-semibold" id="counter"></div>
             </div>
+
              {/* Submit Button */}
             <div className="text-center">
              <button
