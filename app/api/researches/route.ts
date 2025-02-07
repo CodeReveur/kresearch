@@ -63,7 +63,7 @@ export async function GET(req: Request) {
       );
 
       // Append conditions to query
-      query += ` WHERE ${conditions.join(" OR ")}`;
+      query += ` WHERE r.status ='Published' AND ${conditions.join(" OR ")}`;
 
       // Add ORDER BY match count (higher match count first)
       query += ` ORDER BY match_count DESC, r.created_at DESC`;
@@ -76,6 +76,7 @@ export async function GET(req: Request) {
         FROM researches r
         JOIN institutions i ON CAST(i.id AS TEXT) = r.institution
         JOIN schools s ON CAST(s.id AS TEXT) = r.school
+        WHERE r.status ='Published'
         ORDER BY r.id ASC
       `;
     }
