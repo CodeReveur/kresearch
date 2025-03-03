@@ -25,9 +25,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const send = await sendContactEmail(email, message, name);
     const sendCopy = await sendContactCopyEmail(email, message, name);
+    const sendCeoCopy = await sendContactCopyEmail(email, message, name);
     
     return NextResponse.json(
-      { message: "Message sent successfully", send, sendCopy},
+      { message: "Message sent successfully", send, sendCopy, sendCeoCopy},
       { status: 201 }
     );
   } catch (error) {
