@@ -63,6 +63,7 @@ const SideBar = () => {
 
           {/* Auth Button */}
           <div className="flex flex-col mt-auto"> 
+           
             <button
               onClick={() => setIsAuth(!isAuth)}
               className="mx-4 py-2 border border-teal-400 bg-teal-100 px-2 text-teal-600 text-center font-medium rounded-md hover:text-[#00796b] hover:bg-slate-100"
@@ -70,7 +71,13 @@ const SideBar = () => {
               <i className="bi bi-box-arrow-right mr-3 text-lg"></i>
               <span className="text-base">Login</span>
             </button>
-           
+            <Link
+              href={"/w-page/help"}
+              className="mx-4 py-1 my-2 text-xs px-2 text-slate-900 font-medium rounded-md hover:text-[#010303]"
+            >
+              <i className="bi bi-question-circle-fill mr-3 text-lg"></i>
+              <span className="text-base">Need help</span>
+            </Link>
           </div>
         </div>
       </div>
