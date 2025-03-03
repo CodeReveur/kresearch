@@ -2,8 +2,9 @@
 
 import Preloader from "@/app/components/app/divPreloader";
 import TopBar from "@/app/components/results/top";
+import Footer from "@/app/pages/footer";
+import SideBar from "@/app/pages/sidebar";
 import Link from "next/link";
-import { title } from "process";
 import { useEffect, useState } from "react";
 
 interface FormData {
@@ -236,7 +237,12 @@ export default function Page() {
             )}
           </div>
         </div>
+        
       )}
+       {isOpen && (
+        <SideBar />
+      )}
+      <Footer />
     </>
   );
   

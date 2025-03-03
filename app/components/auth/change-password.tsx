@@ -165,8 +165,7 @@ const ChangePassword = ({hashed}: Props) => {
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-400 border-t border-teal-300 mt-6 py-2">
-
-          © 2023 - 2024 Kamero Research Base
+        &copy; {new Date().getFullYear()} Kamero Research Base
         </p>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import PopupForm from "../auth/choose";
 
 interface TopbarProps {
   onClickSideBar: () => void;
@@ -7,6 +8,7 @@ interface TopbarProps {
 
 const TopBar = ({ onClickSideBar }: TopbarProps) => {
   const [query, setQuery] = useState("");
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -17,7 +19,12 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
   }, []);
 
   return (
+    <>
+          {isAuth && (
+            <PopupForm />
+          )}
     <div className="fixed bg-white w-full top-0 left-0 m-0 z-10 shadow-md">
+      
       {/* Top Section */}
       <div className="flex justify-between items-center px-4 lg:px-8 py-2">
         {/* Left Section */}
@@ -28,7 +35,7 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
           <button onClick={onClickSideBar} className="text-teal-800 text-2xl">
             <i className="bi bi-list"></i>
           </button>
-          <Link href={"/help"} className="hidden sm:flex items-center text-slate-500">
+          <Link href={"/w-page/help"} className="hidden sm:flex items-center text-slate-500">
             <i className="bi bi-question-circle-fill text-2xl mr-2"></i>
             <span> Help </span>
           </Link>
@@ -42,7 +49,7 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
             </div>
           ) : (
             <div className="flex space-x-2">
-              <Link href="https://app.kamero.rw/auth/login" className="border border-teal-600 py-1 px-4 rounded-md">
+              <Link href="#" onClick={() => setIsAuth(!isAuth)} className="border border-teal-600 py-1 px-4 rounded-md">
                 Login
               </Link>
               <Link href="/w-page/auth/join" className="border border-teal-300 py-1 px-4 rounded-md bg-teal-600 text-white">
@@ -71,7 +78,7 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
 
         {/* Navigation Links */}
         <div className="hidden sm:flex text-white space-x-6 sm:space-x-10 mt-2 sm:mt-0">
-          <Link href={"/contact"} className="hover:text-sky-100 hover:underline text-nowrap">
+          <Link href={"/contact-us"} className="hover:text-sky-100 hover:underline text-nowrap">
             Contact us
           </Link>
           <Link href={"/about"} className="hover:text-sky-100 hover:underline">
@@ -88,6 +95,7 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

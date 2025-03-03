@@ -1,7 +1,7 @@
 const Footer = () => {
   return(
     <div className="py-3 text-center w-full text-teal-600 font-medium">
-      &copy; Kamero 2025 . All right reserved
+      <p>&copy; {new Date().getFullYear()} Kamero Research Base. All rights reserved.</p>
     </div>
   )
 }

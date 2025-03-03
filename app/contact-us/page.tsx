@@ -3,7 +3,7 @@
 import SideBar from "@/app/pages/sidebar";
 import TopBar from "@/app/components/results/top";
 import { useState } from "react";
-import Result from "@/app/components/results";
+import ContactUs from "@/app/components/app/contact-us";
 import Footer from "@/app/pages/footer";
 
 const Results = ( ) => {
@@ -22,9 +22,10 @@ const Results = ( ) => {
         <SideBar />
       )}
     <div onClick={closeSideBar}>
-      <Result />
+      <ContactUs />
       <Footer />
     </div>
+
     </>
   );
 }

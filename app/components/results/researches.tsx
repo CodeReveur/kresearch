@@ -311,6 +311,7 @@ const Researches = () => {
         setLoading(false);
 
       } catch (error) {
+        setLoading(false);
         setError("An error occurred while fetching researches.");
       }
     };

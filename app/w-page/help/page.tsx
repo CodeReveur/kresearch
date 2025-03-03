@@ -3,8 +3,8 @@
 import SideBar from "@/app/pages/sidebar";
 import TopBar from "@/app/components/results/top";
 import { useState } from "react";
-import Result from "@/app/components/results";
-import Footer from "@/app/pages/footer";
+import AboutUs from "@/app/components/app/about";
+import HelpPage from "@/app/components/app/help";
 
 const Results = ( ) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +22,7 @@ const Results = ( ) => {
         <SideBar />
       )}
     <div onClick={closeSideBar}>
-      <Result />
-      <Footer />
+      <HelpPage />
     </div>
     </>
   );

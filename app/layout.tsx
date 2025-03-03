@@ -79,9 +79,6 @@ export default function RootLayout({
      
       <body>
         {children}
-        {!hide && (
-           <Footer />
-        )}
        
       </body>
       

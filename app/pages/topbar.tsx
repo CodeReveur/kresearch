@@ -5,6 +5,7 @@ interface TopbarProps {
 }
 
 const TopBar = ({ onClickSideBar }: TopbarProps) => {
+
   return (
     <div className="m-0 py-3 px-5">
       <div className="flex flex-wrap justify-between items-center gap-3">
@@ -19,9 +20,9 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
           <div className="mx-2 cursor-pointer" onClick={onClickSideBar}>
             <i className="bi bi-list text-xl sm:text-2xl text-teal-800"></i>
           </div>
-          <Link href="#" className="hidden sm:flex items-center mx-3">
-            <i className="bi bi-question-circle-fill text-xl sm:text-2xl mr-2"></i>
-            <span className="text-sm sm:text-base">Help</span>
+          <Link href={"/w-page/help"} className="hidden sm:flex items-center text-slate-500">
+            <i className="bi bi-question-circle-fill text-2xl mr-2"></i>
+            <span> Help </span>
           </Link>
         </div>
         <div className="login flex items-center space-x-3 sm:space-x-4">
@@ -48,6 +49,7 @@ const TopBar = ({ onClickSideBar }: TopbarProps) => {
         </div>
       </div>
     </div>
+    
   );
 };
 
