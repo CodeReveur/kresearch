@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { sendContactCopyEmail, sendContactEmail} from "../../utils/config";
-
-type StudentRequest = {
-  name: string;
-  message: string;
-  email: string;
-};
-
-
-
+import { sendCeoContactCopyEmail, sendContactCopyEmail, sendContactEmail} from "../../utils/config";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
@@ -25,7 +16,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const send = await sendContactEmail(email, message, name);
     const sendCopy = await sendContactCopyEmail(email, message, name);
-    const sendCeoCopy = await sendContactCopyEmail(email, message, name);
+    const sendCeoCopy = await sendCeoContactCopyEmail(email, message, name);
     
     return NextResponse.json(
       { message: "Message sent successfully", send, sendCopy, sendCeoCopy},
