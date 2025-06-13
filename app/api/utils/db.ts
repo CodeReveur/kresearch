@@ -1,4 +1,4 @@
-const { Client } = require("pg");
+/**const { Client } = require("pg");
 
 const client = new Client({
   host: process.env.PG_HOST,
@@ -10,7 +10,7 @@ const client = new Client({
 });
 
 client.connect();
-/**
+*/
 let client: any;
 
 try {
@@ -37,6 +37,6 @@ try {
     console.error('Failed to connect to the database:', error);
     throw error;
 }
-*/
+
 export default client;
 
